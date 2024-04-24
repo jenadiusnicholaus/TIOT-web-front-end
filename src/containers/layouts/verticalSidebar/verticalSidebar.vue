@@ -103,7 +103,7 @@
                   :class="{
                     'vertical-item-name': getVerticalCompact.isItemName,
                   }"
-                  >UI Kits</span
+                  >Properties</span
                 >
                 <arrowIcon />
               </a>

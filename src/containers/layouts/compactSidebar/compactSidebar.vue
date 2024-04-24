@@ -38,7 +38,7 @@
         >
           <a class="nav-item-hold" href="#">
             <i class="nav-icon i-Library"></i>
-            <span class="nav-text">UI kits</span>
+            <span class="nav-text">Properties</span>
           </a>
           <div class="triangle"></div>
         </li>

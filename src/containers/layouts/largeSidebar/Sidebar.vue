@@ -36,7 +36,7 @@
           >
             <a class="nav-item-hold" href="#">
               <i class="nav-icon i-Library"></i>
-              <span class="nav-text">UI kits</span>
+              <span class="nav-text">Properties</span>
             </a>
             <div class="triangle"></div>
           </li>
@@ -118,7 +118,7 @@
             </a>
             <div class="triangle"></div>
           </li>
-          <li
+          <!-- <li
             @mouseenter="toggleSubMenu"
             class="nav-item"
             :class="{ active: selectedParentMenu == 'sessions' }"
@@ -130,7 +130,7 @@
               <span class="nav-text">Sessions</span>
             </a>
             <div class="triangle"></div>
-          </li>
+          </li> -->
           <li
             @mouseenter="toggleSubMenu"
             :class="{ active: selectedParentMenu == 'pages' }"
@@ -916,6 +916,7 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     Topnav,
   },
 

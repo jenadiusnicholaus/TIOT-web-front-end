@@ -7,7 +7,7 @@
       <div class="card o-hidden">
         <div class="row">
           <div
-            class="col-md-6 text-center "
+            class="col-md-6 text-center"
             style="background-size: cover"
             :style="{ backgroundImage: 'url(' + signInImage + ')' }"
           >
@@ -43,10 +43,28 @@
             <div class="p-4">
               <h1 class="mb-3 text-18">Sign Up</h1>
               <b-form @submit.prevent="submit">
-                <b-form-group label="Your Name">
+                <b-form-group label="User Name">
                   <b-form-input
                     class="form-control form-control-rounded"
-                    label="Name"
+                    label="Username"
+                    v-model.trim="$v.username.$model"
+                  >
+                  </b-form-input>
+
+                  <b-alert
+                    show
+                    variant="danger"
+                    class="error col mt-1"
+                    v-if="!$v.username.minLength"
+                    >Name must have at least
+                    {{ $v.username.$params.minLength.min }} letters.</b-alert
+                  >
+                </b-form-group>
+
+                <b-form-group label="First Name">
+                  <b-form-input
+                    class="form-control form-control-rounded"
+                    label="First Name"
                     v-model.trim="$v.fName.$model"
                   >
                   </b-form-input>
@@ -58,6 +76,24 @@
                     v-if="!$v.fName.minLength"
                     >Name must have at least
                     {{ $v.fName.$params.minLength.min }} letters.</b-alert
+                  >
+                </b-form-group>
+
+                <b-form-group label="Last Name">
+                  <b-form-input
+                    class="form-control form-control-rounded"
+                    label="Last Name"
+                    v-model.trim="$v.lName.$model"
+                  >
+                  </b-form-input>
+
+                  <b-alert
+                    show
+                    variant="danger"
+                    class="error col mt-1"
+                    v-if="!$v.lName.minLength"
+                    >Name must have at least
+                    {{ $v.lName.$params.minLength.min }} letters.</b-alert
                   >
                 </b-form-group>
 
@@ -75,6 +111,7 @@
                   <b-form-input
                     class="form-control form-control-rounded"
                     label="Name"
+                    aria-placeholder="Password"
                     type="password"
                     v-model.trim="$v.password.$model"
                   >
@@ -88,6 +125,26 @@
                     >Minimum
                     {{ $v.password.$params.minLength.min }} charaters.</b-alert
                   >
+
+                  <b-alert
+                    show
+                    variant="danger"
+                    class="error col mt-1"
+                    v-if="!$v.password.notCommon"
+                  >
+                    This password is too common. Please choose a different
+                    password.
+                  </b-alert>
+
+                  <b-alert
+                    show
+                    variant="danger"
+                    class="error col mt-1"
+                    v-if="!$v.password.notNumeric"
+                  >
+                    This password is entirely numeric. Please include some
+                    non-numeric characters.
+                  </b-alert>
                 </b-form-group>
 
                 <b-form-group label="Repeat Password">
@@ -138,6 +195,17 @@
 <script>
 import { required, sameAs, minLength } from "vuelidate/lib/validators";
 import { mapGetters, mapActions } from "vuex";
+
+function notCommon(value) {
+  // List of common passwords - you can add more
+  const commonPasswords = ["123456", "password", "admin"];
+  return !commonPasswords.includes(value);
+}
+
+function notNumeric(value) {
+  // Check if the value is entirely numeric
+  return !/^\d+$/.test(value);
+}
 export default {
   metaInfo: {
     // if no subcomponents specify a metaInfo.title, this title will be used
@@ -146,7 +214,9 @@ export default {
 
   data() {
     return {
+      username: "",
       fName: "",
+      lName: "",
       email: "",
       bgImage: require("@/assets/images/photo-wide-4.jpg"),
       logo: require("@/assets/images/logo.png"),
@@ -158,14 +228,26 @@ export default {
   },
 
   validations: {
+    username: {
+      required,
+      minLength: minLength(4),
+    },
+
     fName: {
+      required,
+      minLength: minLength(4),
+    },
+
+    lName: {
       required,
       minLength: minLength(4),
     },
 
     password: {
       required,
-      minLength: minLength(5),
+      minLength: minLength(8),
+      notCommon,
+      notNumeric,
     },
     repeatPassword: {
       sameAsPassword: sameAs("password"),
@@ -186,24 +268,50 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["loggedInUser", "loading", "error"]),
+    ...mapGetters(["loggedInUser", "singUploading", "error"]),
+    ...mapGetters(["signUpuser", "error"]),
   },
 
   methods: {
     ...mapActions(["signUserUp"]),
-    //   validate form
-    submit() {
-      // console.log("submit!");
 
+    async submit() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         this.submitStatus = "ERROR";
       } else {
-        this.signUserUp({ email: this.email, password: this.password });
-        this.submitStatus = "PENDING";
-        setTimeout(() => {
-          this.submitStatus = "OK";
-        }, 1000);
+        try {
+          this.submitStatus = "PENDING";
+          sessionStorage.clear();
+          const response = await this.signUserUp({
+            username: this.username,
+            first_name: this.fName,
+            last_name: this.lName,
+            email: this.email,
+            password: this.password,
+            password2: this.repeatPassword,
+          });
+
+          if (response.status === 201) {
+            const data = await response.json(); // Add await here
+            console.log(data);
+            sessionStorage.setItem("registeredUser", JSON.stringify(data));
+            this.notificationToast(this, true, "success", "Account Created");
+            this.$router.push("/sessions/validate");
+          } else {
+            const errorData = await response.json(); // Add await here
+
+            this.submitStatus = "ERROR";
+            this.notificationToast(this, true, "warning", errorData);
+            setTimeout(() => {
+              this.submitStatus = "OK";
+            }, 1000);
+          }
+        } catch (error) {
+          console.log(error.message);
+          this.submitStatus = "ERROR";
+          this.notificationToast(this, true, "warning", error);
+        }
       }
     },
     makeToast(variant = null) {
@@ -221,10 +329,21 @@ export default {
       });
     },
 
+    notificationToast(vm, append = false, variant = null, msg) {
+      vm.$bvToast.toast(`${msg}`, {
+        title: `${variant || "default"}`,
+        autoHideDelay: 5000,
+        appendToast: append,
+        variant: variant,
+      });
+    },
+
     inputSubmit() {
       // console.log("submitted");
     },
   },
+
+  watch: {},
 };
 </script>
 <style>

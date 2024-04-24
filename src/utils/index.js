@@ -25,6 +25,16 @@ const toggleFullScreen = () => {
   }
 };
 
+const notificationToast = (vm, append = false, variant = null, msg) => {
+  vm.$bvToast.toast(`${msg}`, {
+    title: `${variant || "default"}`,
+    autoHideDelay: 5000,
+    appendToast: append,
+    variant: variant,
+  });
+};
+
 export default {
-  toggleFullScreen
+  toggleFullScreen,
+  notificationToast,
 };

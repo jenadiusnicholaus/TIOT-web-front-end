@@ -96,6 +96,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+// import { defineComponent } from "vuex";
 export default {
   metaInfo: {
     // if no subcomponents specify a metaInfo.title, this title will be used
@@ -103,8 +104,8 @@ export default {
   },
   data() {
     return {
-      email: "ui-lib@gmail.com",
-      password: "123456",
+      email: "",
+      password: "",
       // // password: "vue006",
       userId: "",
       bgImage: require("@/assets/images/photo-wide-4.jpg"),
@@ -112,6 +113,8 @@ export default {
       signInImage: require("@/assets/images/photo-long-3.jpg"),
     };
   },
+  setup() {},
+
   computed: {
     validation() {
       return this.userId.length > 4 && this.userId.length < 13;
@@ -120,34 +123,36 @@ export default {
   },
 
   methods: {
-    ...mapActions(["login"]),
+    ...mapActions(["login", "getUserProfile"]),
     formSubmit() {
-      // this.login({ email: this.email, password: this.password });
-      this.$router.push("/");
-
-      // this.$router.push("/");
+      this.login({ username: this.email, password: this.password });
     },
-    makeToast(variant = null, msg) {
-      this.$bvToast.toast(msg, {
-        title: ` ${variant || "default"}`,
+
+    notificationToast(vm, append = false, variant = null, msg) {
+      vm.$bvToast.toast(`${msg}`, {
+        title: `${variant || "default"}`,
+        autoHideDelay: 5000,
+        appendToast: append,
         variant: variant,
-        solid: true,
       });
     },
   },
   watch: {
     loggedInUser(val) {
-      if (val && val.uid && val.uid.length > 0) {
-        this.makeToast("success", "Successfully Logged In");
-
+      console.log(val);
+      if (val && val.access && val.refresh) {
+        // this.userProfile();
+        this.notificationToast(this, true, "success", "Successfully Logged In");
         setTimeout(() => {
-          this.$router.push("/");
+          this.$router.push("/app/dashboards/dashboard.v1");
         }, 500);
       }
     },
     error(val) {
       if (val != null) {
-        this.makeToast("warning", val.message);
+        console.log(val);
+        // this.makeToast("warning", val.message);
+        this.notificationToast(this, true, "warning", val);
       }
     },
   },

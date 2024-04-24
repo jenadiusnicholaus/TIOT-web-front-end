@@ -3,7 +3,8 @@ import store from "./store";
 // import {isMobile} from "mobile-device-detect";
 import Router from "vue-router";
 import NProgress from "nprogress";
-import authenticate from "./auth/authenticate";
+import authenticate from "./auth_guard/authenticate";
+import validationChecker from "./auth_guard/validation_guard";
 
 Vue.use(Router);
 
@@ -12,14 +13,21 @@ Vue.use(Router);
 const routes = [
   {
     path: "/",
-    component: () => import("./views/app"), //webpackChunkName app
+    beforeEnter: validationChecker,
+    component: () => import("./views/app"),
+    redirect: "/sessions/signIn",
+  },
+
+  {
+    path: "/app/dashboards",
+    component: () => import("./views/app"),
     beforeEnter: authenticate,
     redirect: "/app/dashboards/dashboard.v1",
 
     children: [
       {
         path: "/app/dashboards",
-        component: () => import("./views/app/dashboards"), //dashboard
+        component: () => import("./views/app/dashboards"),
         children: [
           {
             path: "dashboard.v1",
@@ -44,7 +52,6 @@ const routes = [
         ],
       },
 
-      //ui-kits
       {
         path: "/app/ui-kits",
         component: () => import("./views/app/ui-kits"),
@@ -120,14 +127,9 @@ const routes = [
             name: "pagination",
             component: () => import("./views/app/ui-kits/pagination"),
           },
-          // {
-          //   path: "slider",
-          //   component: () => import("./views/app/ui-kits/sliders")
-          // }
         ],
       },
 
-      //uiExtraKits
       {
         path: "/app/extraKits",
         component: () => import("./views/app/extraKits"),
@@ -292,7 +294,7 @@ const routes = [
           },
           {
             path: "vue-table",
-            path: "vue-table",
+            name: "vue-table",
             component: () => import("./views/app/apps/vue-tables"),
           },
           {
@@ -432,6 +434,7 @@ const routes = [
         children: [
           {
             path: "profile",
+            // beforeEnter: authenticate,
             component: () => import("./views/app/pages/profile"),
           },
           {
@@ -515,12 +518,15 @@ const routes = [
   },
   // sessions
   {
-    path: "/app/sessions",
+    path: "/sessions",
     component: () => import("./views/app/sessions"),
-    redirect: "/app/sessions/signIn",
+    redirect: "/sessions/signIn",
+
     children: [
       {
         path: "signIn",
+        name: "signIn",
+
         component: () => import("./views/app/sessions/signIn"),
       },
       {
@@ -530,6 +536,16 @@ const routes = [
       {
         path: "forgot",
         component: () => import("./views/app/sessions/forgot"),
+      },
+      {
+        path: "validate",
+        name: "validate",
+        component: () => import("./views/app/sessions/validate_account"),
+      },
+      {
+        path: "reset_password",
+        name: "reset_password",
+        component: () => import("./views/app/sessions/reset_password"),
       },
     ],
   },
@@ -548,7 +564,7 @@ const router = new Router({
   mode: "history",
   linkActiveClass: "open",
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior() {
     return { x: 0, y: 0 };
   },
 });

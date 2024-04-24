@@ -42,7 +42,7 @@
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                 Asperiores natus laboriosam fugit, consequatur.
               </p>
-              <p class=" mb-30">
+              <p class="mb-30">
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                 Exercitationem odio amet eos dolore suscipit placeat.
               </p>
@@ -167,7 +167,7 @@
         <b-dropdown
           id="dropdown-1"
           text="Dropdown Button"
-          class="m-md-2  badge-top-container"
+          class="m-md-2 badge-top-container"
           toggle-class="text-decoration-none"
           no-caret
           variant="link"
@@ -181,7 +181,7 @@
             :settings="{ suppressScrollX: true, wheelPropagation: false }"
             :class="{ open: getSideBarToggleProperties.isSideNavOpen }"
             ref="myData"
-            class="dropdown-menu-right rtl-ps-none notification-dropdown  ps scroll"
+            class="dropdown-menu-right rtl-ps-none notification-dropdown ps scroll"
           >
             <!-- <div class="dropdown-menu-right rtl-ps-none notification-dropdown"> -->
             <div class="dropdown-item d-flex">
@@ -268,7 +268,7 @@
         >
           <template slot="button-content">
             <img
-              src="@/assets/images/faces/1.jpg"
+              :src="profilePic"
               id="userDropdown"
               alt
               data-toggle="dropdown"
@@ -279,11 +279,16 @@
 
           <div class="dropdown-menu-right" aria-labelledby="userDropdown">
             <div class="dropdown-header">
-              <i class="i-Lock-User mr-1"></i> Timothy Carlson
+              <i class="i-Lock-User mr-1"></i>{{ username }}
             </div>
+            <a @click="gotoProfile()" class="dropdown-item">profile</a>
             <a class="dropdown-item">Account settings</a>
-            <a class="dropdown-item">Billing history</a>
-            <a class="dropdown-item" href="#" @click.prevent="logoutUser"
+            <!-- <a class="dropdown-item">Billing history</a> -->
+            <a
+              style="color: red"
+              class="dropdown-item"
+              href="#"
+              @click.prevent="logoutUser"
               >Sign out</a
             >
           </div>
@@ -309,8 +314,9 @@ import { mixin as clickaway } from "vue-clickaway";
 export default {
   mixins: [clickaway],
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     Sidebar,
-    searchComponent
+    searchComponent,
   },
 
   data() {
@@ -320,14 +326,26 @@ export default {
       isStyle: true,
       isSearchOpen: false,
       isMouseOnMegaMenu: true,
-      isMegaMenuOpen: false
+      isMegaMenuOpen: false,
+      profile: JSON.parse(sessionStorage.getItem("userprofile")),
     };
   },
   mounted() {
     // document.addEventListener("click", this.closeMegaMenu);
+    // this.profile = JSON.parse(localStorage.getItem("userprofile"));
+    // console.log(this.profile);
   },
   computed: {
-    ...mapGetters(["getSideBarToggleProperties"])
+    ...mapGetters(["getSideBarToggleProperties"]),
+    profilePic() {
+      return this.profile?.user_profile_pic
+        ? this.profile?.user_profile_pic
+        : require("@/assets/images/avata_profile.jpeg");
+    },
+
+    username() {
+      return this.profile?.user?.username;
+    },
   },
 
   methods: {
@@ -336,7 +354,7 @@ export default {
 
       "changeSidebarProperties",
       "changeThemeMode",
-      "signOut"
+      "signOut",
     ]),
 
     // megaMenuToggle() {
@@ -345,13 +363,17 @@ export default {
     //   console.log("work");
     // },
 
+    gotoProfile() {
+      this.$router.push("/app/pages/profile");
+    },
+
     handleFullScreen() {
       Util.toggleFullScreen();
     },
     logoutUser() {
       this.signOut();
 
-      this.$router.push("/app/sessions/signIn");
+      this.$router.push("/sessions/signIn");
     },
 
     closeMegaMenu() {
@@ -399,10 +421,7 @@ export default {
         this.changeSecondarySidebarProperties();
         // console.log("4");
       }
-    }
-  }
+    },
+  },
 };
 </script>
-
-
-

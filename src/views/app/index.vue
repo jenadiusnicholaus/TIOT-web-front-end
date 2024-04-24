@@ -6,8 +6,8 @@
   </div>
 </template>
 
-<script>
-import { mapGetters, mapActions } from "vuex";
+<script lang="ts">
+import { mapGetters } from "vuex";
 
 export default {
   components: {},
@@ -15,8 +15,8 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["getThemeMode"])
+    ...mapGetters(["getThemeMode"]),
   },
-  methods: {}
+  methods: {},
 };
 </script>

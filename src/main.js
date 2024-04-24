@@ -19,6 +19,9 @@ import i18n from "./lang/lang";
 import "vue2-daterange-picker/dist/vue2-daterange-picker.css";
 //import material-icon scss
 import "font-awesome/css/font-awesome.min.css";
+import { ToastPlugin } from "bootstrap-vue";
+import "./interceptor/token_interceptor";
+// import "./interceptor/refresh_token_interceptor";
 
 //defined as global component
 Vue.component(
@@ -32,6 +35,7 @@ import InstantSearch from "vue-instantsearch";
 
 Vue.use(InstantSearch);
 Vue.use(GullKit);
+Vue.use(ToastPlugin);
 
 // firebase.initializeApp(firebaseSettings)
 // const db = firebase.firestore();

@@ -42,7 +42,7 @@
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                 Asperiores natus laboriosam fugit, consequatur.
               </p>
-              <p class=" mb-30">
+              <p class="mb-30">
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                 Exercitationem odio amet eos dolore suscipit placeat.
               </p>
@@ -178,7 +178,7 @@
           <vue-perfect-scrollbar
             :settings="{ suppressScrollX: true, wheelPropagation: false }"
             ref="myData"
-            class="dropdown-menu-right rtl-ps-none notification-dropdown  ps scroll"
+            class="dropdown-menu-right rtl-ps-none notification-dropdown ps scroll"
           >
             <!-- <div class="dropdown-menu-right rtl-ps-none notification-dropdown"> -->
             <div class="dropdown-item d-flex">
@@ -276,7 +276,7 @@
 
           <div class="dropdown-menu-right" aria-labelledby="userDropdown">
             <div class="dropdown-header">
-              <i class="i-Lock-User mr-1"></i> Timothy Carlson
+              <i class="i-Lock-User mr-1"></i> Timothy Carlson cd,d,d
             </div>
             <a class="dropdown-item">Account settings</a>
             <a class="dropdown-item">Billing history</a>
@@ -305,7 +305,7 @@ import { mixin as clickaway } from "vue-clickaway";
 export default {
   mixins: [clickaway],
   components: {
-    searchComponent
+    searchComponent,
   },
 
   data() {
@@ -315,21 +315,21 @@ export default {
       isStyle: true,
       isSearchOpen: false,
       isMouseOnMegaMenu: true,
-      isMegaMenuOpen: false
+      isMegaMenuOpen: false,
     };
   },
   mounted() {
     // document.addEventListener("click", this.closeMegaMenu);
   },
   computed: {
-    ...mapGetters(["getCompactSideBarToggleProperties"])
+    ...mapGetters(["getCompactSideBarToggleProperties"]),
   },
 
   methods: {
     ...mapActions([
       "changeCompactSidebarProperties",
       "changeThemeMode",
-      "signOut"
+      "signOut",
     ]),
     logoutUser() {
       this.signOut();
@@ -340,7 +340,7 @@ export default {
       Util.toggleFullScreen();
     },
     closeMegaMenu() {
-      this.isMegaMenuOpen =false;
+      this.isMegaMenuOpen = false;
       // console.log(this.isMouseOnMegaMenu);
       // if (!this.isMouseOnMegaMenu) {
       //   this.isMegaMenuOpen = !this.isMegaMenuOpen;
@@ -374,10 +374,7 @@ export default {
 
         console.log("4");
       }
-    }
-  }
+    },
+  },
 };
 </script>
-
-
-

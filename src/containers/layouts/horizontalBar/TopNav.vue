@@ -42,7 +42,7 @@
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                 Asperiores natus laboriosam fugit, consequatur.
               </p>
-              <p class=" mb-30">
+              <p class="mb-30">
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                 Exercitationem odio amet eos dolore suscipit placeat.
               </p>
@@ -167,7 +167,7 @@
         <b-dropdown
           id="dropdown-1"
           text="Dropdown Button"
-          class="m-md-2  badge-top-container"
+          class="m-md-2 badge-top-container"
           toggle-class="text-decoration-none"
           no-caret
           variant="link"
@@ -181,7 +181,7 @@
             :settings="{ suppressScrollX: true, wheelPropagation: false }"
             :class="{ open: getSideBarToggleProperties.isSideNavOpen }"
             ref="myData"
-            class="dropdown-menu-right rtl-ps-none notification-dropdown  ps scroll"
+            class="dropdown-menu-right rtl-ps-none notification-dropdown ps scroll"
           >
             <!-- <div class="dropdown-menu-right rtl-ps-none notification-dropdown"> -->
             <div class="dropdown-item d-flex">
@@ -309,8 +309,7 @@ import { mixin as clickaway } from "vue-clickaway";
 export default {
   mixins: [clickaway],
   components: {
-
-    searchComponent
+    searchComponent,
   },
 
   data() {
@@ -320,14 +319,15 @@ export default {
       isStyle: true,
       isSearchOpen: false,
       isMouseOnMegaMenu: true,
-      isMegaMenuOpen: false
+      isMegaMenuOpen: false,
+      profile: JSON.parse(localStorage.getItem("userprofile")),
     };
   },
   mounted() {
     // document.addEventListener("click", this.closeMegaMenu);
   },
   computed: {
-    ...mapGetters(["getSideBarToggleProperties"])
+    ...mapGetters(["getSideBarToggleProperties"]),
   },
 
   methods: {
@@ -336,7 +336,7 @@ export default {
 
       "changeSidebarProperties",
       "changeThemeMode",
-      "signOut"
+      "signOut",
     ]),
 
     // megaMenuToggle() {
@@ -399,10 +399,7 @@ export default {
         this.changeSecondarySidebarProperties();
         // console.log("4");
       }
-    }
-  }
+    },
+  },
 };
 </script>
-
-
-

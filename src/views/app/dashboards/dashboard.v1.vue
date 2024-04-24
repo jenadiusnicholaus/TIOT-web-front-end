@@ -549,7 +549,13 @@ export default {
             '<button class=" btn btn-outline-primary text-black btn-rounded">View</button>',
         },
       ],
+      profile: "",
     };
+  },
+  methods: {},
+
+  mounted() {
+    // this.userProfile();
   },
 };
 </script>
