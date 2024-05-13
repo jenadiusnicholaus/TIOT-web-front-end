@@ -1,26 +1,20 @@
 export default (to, from, next) => {
   console.log("From:", from.path);
   console.log("To:", to.path);
-  const userInfo =
-    sessionStorage.getItem("userInfo") != null
-      ? JSON.parse(sessionStorage.getItem("userInfo"))
+  const token =
+    sessionStorage.getItem("access") != null
+      ? JSON.parse(sessionStorage.getItem("access"))
       : null;
 
   if (from.path === "/app/sessions/signUp") {
     next("/sessions/validate");
     return;
   }
-  if (to.path === "/") {
-    next("/sessions/signIn");
-    return;
+  
+  if (to.path === "/" && token !== null) {
+    next("/app/dashboard");
   }
-
-  if (userInfo === null) {
-    next("/sessions/signIn");
-    return;
-  }
-
-  if (userInfo?.access !== null) {
+  if (token !== null) {
     next();
     return;
   } else {

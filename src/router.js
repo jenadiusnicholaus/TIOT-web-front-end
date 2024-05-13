@@ -4,7 +4,7 @@ import store from "./store";
 import Router from "vue-router";
 import NProgress from "nprogress";
 import authenticate from "./auth_guard/authenticate";
-import validationChecker from "./auth_guard/validation_guard";
+// import validationChecker from "./auth_guard/validation_guard";
 
 Vue.use(Router);
 
@@ -13,9 +13,9 @@ Vue.use(Router);
 const routes = [
   {
     path: "/",
-    beforeEnter: validationChecker,
+    beforeEnter: authenticate,
     component: () => import("./views/app"),
-    redirect: "/sessions/signIn",
+    redirect: "/app/dashboards/dashboard.v1",
   },
 
   {
@@ -33,21 +33,6 @@ const routes = [
             path: "dashboard.v1",
             name: "dashboard.v1",
             component: () => import("./views/app/dashboards/dashboard.v1"),
-          },
-          {
-            path: "dashboard.v2",
-            name: "dashboard.v2",
-            component: () => import("./views/app/dashboards/dashboard.v2"),
-          },
-          {
-            path: "dashboard.v3",
-            name: "dashboard.v3",
-            component: () => import("./views/app/dashboards/dashboard.v3"),
-          },
-          {
-            path: "dashboard.v4",
-            name: "dashboard.v4",
-            component: () => import("./views/app/dashboards/dashboard.v4"),
           },
         ],
       },

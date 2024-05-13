@@ -690,7 +690,7 @@ export const stackedArea = {
     chart: {
       stacked: true,
       events: {
-        selection: function(chart, e) {
+        selection: function (chart, e) {
           // console.log(new Date(e.xaxis.min));
         },
       },
@@ -1027,7 +1027,7 @@ export const stackedbar = {
 
     tooltip: {
       y: {
-        formatter: function(val) {
+        formatter: function (val) {
           return val + "K";
         },
       },
@@ -1050,47 +1050,15 @@ export const negativeBar = {
     {
       name: "Males",
       data: [
-        0.4,
-        0.65,
-        0.76,
-        0.88,
-        1.5,
-        2.1,
-        2.9,
-        3.8,
-        3.9,
-        4.2,
-        4,
-        4.3,
-        4.1,
-        4.2,
-        4.5,
-        3.9,
-        3.5,
-        3,
+        0.4, 0.65, 0.76, 0.88, 1.5, 2.1, 2.9, 3.8, 3.9, 4.2, 4, 4.3, 4.1, 4.2,
+        4.5, 3.9, 3.5, 3,
       ],
     },
     {
       name: "Females",
       data: [
-        -0.8,
-        -1.05,
-        -1.06,
-        -1.18,
-        -1.4,
-        -2.2,
-        -2.85,
-        -3.7,
-        -3.96,
-        -4.22,
-        -4.3,
-        -4.4,
-        -4.1,
-        -4,
-        -4.1,
-        -3.4,
-        -3.1,
-        -2.8,
+        -0.8, -1.05, -1.06, -1.18, -1.4, -2.2, -2.85, -3.7, -3.96, -4.22, -4.3,
+        -4.4, -4.1, -4, -4.1, -3.4, -3.1, -2.8,
       ],
     },
   ],
@@ -1129,12 +1097,12 @@ export const negativeBar = {
     tooltip: {
       shared: false,
       x: {
-        formatter: function(val) {
+        formatter: function (val) {
           return val;
         },
       },
       y: {
-        formatter: function(val) {
+        formatter: function (val) {
           return Math.abs(val) + "%";
         },
       },
@@ -1165,7 +1133,7 @@ export const negativeBar = {
         text: "Percent",
       },
       labels: {
-        formatter: function(val) {
+        formatter: function (val) {
           return Math.abs(Math.round(val)) + "%";
         },
       },
@@ -1210,7 +1178,7 @@ export const customDataLabelBar = {
       style: {
         colors: ["#fff"],
       },
-      formatter: function(val, opt) {
+      formatter: function (val, opt) {
         return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val;
       },
       offsetX: 0,
@@ -1258,7 +1226,7 @@ export const customDataLabelBar = {
       },
       y: {
         title: {
-          formatter: function() {
+          formatter: function () {
             return "";
           },
         },
@@ -1316,7 +1284,7 @@ export const patternedBar = {
     tooltip: {
       shared: false,
       y: {
-        formatter: function(val) {
+        formatter: function (val) {
           return val + "K";
         },
       },
@@ -1396,7 +1364,7 @@ export const basicColumnChart = {
     },
     tooltip: {
       y: {
-        formatter: function(val) {
+        formatter: function (val) {
           return "$ " + val + " thousands";
         },
       },
@@ -1429,7 +1397,7 @@ export const columnDataLabels = {
     },
     dataLabels: {
       enabled: true,
-      formatter: function(val) {
+      formatter: function (val) {
         return val + "%";
       },
       offsetY: -20,
@@ -1502,7 +1470,7 @@ export const columnDataLabels = {
       },
       labels: {
         show: false,
-        formatter: function(val) {
+        formatter: function (val) {
           return val + "%";
         },
       },
@@ -1582,39 +1550,9 @@ export const negativeColumn = {
     {
       name: "Cash Flow",
       data: [
-        1.45,
-        5.42,
-        5.9,
-        -0.42,
-        -12.6,
-        -18.1,
-        -18.2,
-        -14.16,
-        -11.1,
-        -6.09,
-        0.34,
-        3.88,
-        13.07,
-        5.8,
-        2,
-        7.37,
-        8.1,
-        13.57,
-        15.75,
-        17.1,
-        19.8,
-        -27.03,
-        -54.4,
-        -47.2,
-        -43.3,
-        -18.6,
-        -48.6,
-        -41.1,
-        -39.6,
-        -37.6,
-        -29.4,
-        -21.4,
-        -2.4,
+        1.45, 5.42, 5.9, -0.42, -12.6, -18.1, -18.2, -14.16, -11.1, -6.09, 0.34,
+        3.88, 13.07, 5.8, 2, 7.37, 8.1, 13.57, 15.75, 17.1, 19.8, -27.03, -54.4,
+        -47.2, -43.3, -18.6, -48.6, -41.1, -39.6, -37.6, -29.4, -21.4, -2.4,
       ],
     },
   ],
@@ -1646,7 +1584,7 @@ export const negativeColumn = {
         text: "Growth",
       },
       labels: {
-        formatter: function(y) {
+        formatter: function (y) {
           return y.toFixed(0) + "%";
         },
       },
@@ -1703,14 +1641,18 @@ export const distributedColumnChart = {
       type: "bar",
     },
     colors: [
-      "#008FFB",
-      "#00E396",
-      "#FEB019",
-      "#FF4560",
-      "#775DD0",
-      "#546E7A",
-      "#26a69a",
-      "#D10CE8",
+      "#a855f7",
+      "#a855f7",
+      "#a855f7",
+      "#a855f7",
+      "#a855f7",
+      "#a855f7",
+      "#a855f7",
+      "#a855f7",
+      "#a855f7",
+      "#a855f7",
+      "#a855f7",
+      "#a855f7",
     ],
     plotOptions: {
       bar: {
@@ -1724,19 +1666,23 @@ export const distributedColumnChart = {
     },
     series: [
       {
-        data: [21, 22, 10, 28, 16, 21, 13, 30],
+        data: [21, 22, 10, 28, 16, 21, 13, 30, 15, 27, 14, 20],
       },
     ],
     xaxis: {
       categories: [
-        "John",
-        "Joe",
-        "Jake",
-        "Amber",
-        "Peter",
-        "Mary",
-        "David",
-        "Lily",
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
       ],
       labels: {
         style: {
@@ -1749,6 +1695,10 @@ export const distributedColumnChart = {
             "#546E7A",
             "#26a69a",
             "#D10CE8",
+            "#008FFB",
+            "#00E396",
+            "#FEB019",
+            "#FF4560",
           ],
           fontSize: "14px",
         },
@@ -2091,21 +2041,21 @@ export const dashedLineChart = {
       y: [
         {
           title: {
-            formatter: function(val) {
+            formatter: function (val) {
               return val + " (mins)";
             },
           },
         },
         {
           title: {
-            formatter: function(val) {
+            formatter: function (val) {
               return val + " per session";
             },
           },
         },
         {
           title: {
-            formatter: function(val) {
+            formatter: function (val) {
               return val;
             },
           },
@@ -2414,7 +2364,7 @@ export const lineArea = {
       shared: true,
       intersect: false,
       y: {
-        formatter: function(y) {
+        formatter: function (y) {
           if (typeof y !== "undefined") {
             return y.toFixed(0) + " points";
           }
@@ -2498,7 +2448,7 @@ export const lineColumnArea = {
       shared: true,
       intersect: false,
       y: {
-        formatter: function(y) {
+        formatter: function (y) {
           if (typeof y !== "undefined") {
             return y.toFixed(0) + " points";
           }
@@ -2798,7 +2748,7 @@ export const radarwithPolygonFill = {
     },
     tooltip: {
       y: {
-        formatter: function(val) {
+        formatter: function (val) {
           return val;
         },
       },
@@ -2806,7 +2756,7 @@ export const radarwithPolygonFill = {
     yaxis: {
       tickAmount: 7,
       labels: {
-        formatter: function(val, i) {
+        formatter: function (val, i) {
           if (i % 2 === 0) {
             return val;
           } else {
@@ -2849,7 +2799,7 @@ export const multipleRadialBar = {
           total: {
             show: true,
             label: "Total",
-            formatter: function(w) {
+            formatter: function (w) {
               // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
               return 249;
             },
@@ -2901,7 +2851,7 @@ export const customAngleCircleChart = {
       markers: {
         size: 0,
       },
-      formatter: function(seriesName, opts) {
+      formatter: function (seriesName, opts) {
         return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
       },
       itemMargin: {
@@ -2968,7 +2918,7 @@ export const gradientRadial = {
             fontSize: "17px",
           },
           value: {
-            formatter: function(val) {
+            formatter: function (val) {
               return parseInt(val);
             },
             color: "#111",
@@ -3016,7 +2966,7 @@ export const strokedangularGauge = {
             offsetY: 76,
             fontSize: "22px",
             color: undefined,
-            formatter: function(val) {
+            formatter: function (val) {
               return val + "%";
             },
           },
@@ -3210,7 +3160,7 @@ export const simpleScatter = {
     xaxis: {
       tickAmount: 10,
       labels: {
-        formatter: function(val) {
+        formatter: function (val) {
           return parseFloat(val).toFixed(1);
         },
       },
@@ -3293,30 +3243,8 @@ export const spark1 = {
     {
       name: "series2",
       data: [
-        47,
-        45,
-        54,
-        38,
-        56,
-        24,
-        65,
-        31,
-        37,
-        39,
-        62,
-        51,
-        35,
-        41,
-        35,
-        27,
-        93,
-        53,
-        61,
-        27,
-        54,
-        43,
-        19,
-        46,
+        47, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
+        61, 27, 54, 43, 19, 46,
       ],
     },
   ],
@@ -3397,30 +3325,8 @@ export const spark2 = {
     {
       name: "series2",
       data: [
-        47,
-        45,
-        54,
-        38,
-        56,
-        24,
-        65,
-        31,
-        37,
-        39,
-        62,
-        51,
-        35,
-        41,
-        35,
-        27,
-        93,
-        53,
-        61,
-        27,
-        54,
-        43,
-        19,
-        46,
+        47, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
+        61, 27, 54, 43, 19, 46,
       ],
     },
   ],
@@ -3461,30 +3367,8 @@ export const spark3 = {
     {
       name: "series2",
       data: [
-        47,
-        45,
-        54,
-        38,
-        56,
-        24,
-        65,
-        31,
-        37,
-        39,
-        62,
-        51,
-        35,
-        41,
-        35,
-        27,
-        93,
-        53,
-        61,
-        27,
-        54,
-        43,
-        19,
-        46,
+        47, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
+        61, 27, 54, 43, 19, 46,
       ],
     },
   ],
@@ -3525,30 +3409,8 @@ export const spark4 = {
     {
       name: "series2",
       data: [
-        47,
-        45,
-        54,
-        38,
-        56,
-        24,
-        65,
-        31,
-        37,
-        39,
-        62,
-        51,
-        35,
-        41,
-        35,
-        27,
-        93,
-        53,
-        61,
-        27,
-        54,
-        43,
-        19,
-        46,
+        47, 45, 54, 38, 56, 24, 65, 31, 37, 39, 62, 51, 35, 41, 35, 27, 93, 53,
+        61, 27, 54, 43, 19, 46,
       ],
     },
   ],
@@ -3902,7 +3764,7 @@ export const radialBar = {
       markers: {
         size: 0,
       },
-      formatter: function(seriesName, opts) {
+      formatter: function (seriesName, opts) {
         return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex];
       },
       itemMargin: {

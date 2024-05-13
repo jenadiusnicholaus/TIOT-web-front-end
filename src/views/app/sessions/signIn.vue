@@ -13,7 +13,7 @@
               </div>
               <h1 class="mb-3 text-18">Sign In</h1>
               <b-form @submit.prevent="formSubmit">
-                <b-form-group label="Email Address" class="text-12">
+                <b-form-group label="Username" class="text-12">
                   <b-form-input
                     class="form-control-rounded"
                     type="text"
@@ -124,13 +124,43 @@ export default {
 
   methods: {
     ...mapActions(["login", "getUserProfile"]),
-    formSubmit() {
-      this.login({ username: this.email, password: this.password });
+    async formSubmit() {
+      try {
+        const response = await this.login({
+          username: this.email,
+          password: this.password,
+        });
+        if (response.status === 200) {
+          try {
+            await this.getUserProfile();
+            this.notificationToast(
+              this,
+              true,
+              "success",
+              "Successfully Logged In"
+            );
+            setTimeout(() => {
+              this.$router.push("/app/dashboards/dashboard.v1");
+            }, 500);
+          } catch (error) {
+            this.notificationToast(
+              this,
+              true,
+              "warning",
+              "Error getting user profile"
+            );
+          }
+        } else {
+          this.notificationToast(this, true, "warning", "Error Logging In");
+        }
+      } catch (error) {
+        this.notificationToast(this, true, "warning", `${error.message} `);
+      }
     },
 
     notificationToast(vm, append = false, variant = null, msg) {
       vm.$bvToast.toast(`${msg}`, {
-        title: `${variant || "default"}`,
+        title: `${msg}`,
         autoHideDelay: 5000,
         appendToast: append,
         variant: variant,
@@ -138,23 +168,36 @@ export default {
     },
   },
   watch: {
-    loggedInUser(val) {
-      console.log(val);
-      if (val && val.access && val.refresh) {
-        // this.userProfile();
-        this.notificationToast(this, true, "success", "Successfully Logged In");
-        setTimeout(() => {
-          this.$router.push("/app/dashboards/dashboard.v1");
-        }, 500);
-      }
-    },
-    error(val) {
-      if (val != null) {
-        console.log(val);
-        // this.makeToast("warning", val.message);
-        this.notificationToast(this, true, "warning", val);
-      }
-    },
+    // loggedInUser(val) {
+    //   console.log(val);
+    //   if (val && val.access && val.refresh) {
+    //     this.userProfile()
+    //       .then(( res) => {
+    //         this.notificationToast(
+    //           this,
+    //           true,
+    //           "success",
+    //           "Successfully Logged In"
+    //         );
+    //         setTimeout(() => {
+    //           this.$router.push("/app/dashboards/dashboard.v1");
+    //         }, 500);
+    //          if (res.status === 200) {
+    //           this.$router.push("/app/dashboards/dashboard.v1");
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //         this.notificationToast(this, true, "warning", "Error Logging In");
+    //         // this.$router.push("/sessions/signIn");
+    //       });
+    //   }
+    // },
+    // error(val) {
+    //   if (val != null) {
+    //     console.log(val);
+    //     this.notificationToast(this, true, "warning", val);
+    //   }
+    // },
   },
 };
 </script>

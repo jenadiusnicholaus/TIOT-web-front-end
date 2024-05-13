@@ -7,6 +7,7 @@ export default {
         : null,
     loading: false,
     singUploading: false,
+    userProfile: null,
     signUpuser:
       sessionStorage.getItem("registeredUser") != null
         ? JSON.parse(sessionStorage.getItem("registeredUser"))
@@ -19,6 +20,7 @@ export default {
     loading: (state) => state.loading,
     error: (state) => state.error,
     signUpuser: (state) => state.signUpuser,
+    userProfile: (state) => state.userProfile,
   },
   mutations: {
     setUser(state, data) {
@@ -53,39 +55,33 @@ export default {
     clearError(state) {
       state.error = null;
     },
+    setUserProfile(state, data) {
+      state.userProfile = data;
+    },
   },
   actions: {
-    login({ commit, dispatch }, data) {
-      sessionStorage.removeItem("userInfo");
-      sessionStorage.removeItem("userprofile");
-      commit("clearError");
-      commit("setLoading", true);
-      let urls = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_LOGIN_URL;
-      console.log(urls);
-      fetch(urls, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => {
-          if (response.status === 200) {
-            dispatch("getUserProfile");
-
-            return response.json();
-          } else {
-            throw new Error("Invalid email or password");
-          }
-        })
-        .then((data) => {
-          commit("setUser", data);
-          commit("setLoading", false);
-          sessionStorage.setItem("userInfo", JSON.stringify(data));
-        })
-        .catch((error) => {
-          commit("setError", error.message);
+    async login({ commit }, data) {
+      try {
+        commit("clearError");
+        commit("setLoading", true);
+        let urls = process.env.VUE_APP_BASE_URL + process.env.VUE_APP_LOGIN_URL;
+        const response = await fetch(urls, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         });
+
+        const responseData = await response.json();
+        commit("setUser", responseData);
+        sessionStorage.setItem("access", JSON.stringify(responseData.access));
+        sessionStorage.setItem("refresh", JSON.stringify(responseData.refresh));
+        return response;
+      } catch (error) {
+        commit("setError", error.message);
+        throw new Error(`Error ${error}`);
+      }
     },
 
     async signUserUp({ commit }, data) {
@@ -127,20 +123,25 @@ export default {
       );
     },
 
-    async getUserProfile() {
+    async getUserProfile({ commit }) {
       try {
+        commit("setLoading", true);
         const response = await axios.get(
           process.env.VUE_APP_BASE_URL + process.env.VUE_APP_USER_PROFILE_URL
         );
         if (response.status === 200) {
           this.profile = response.data;
           const data = response.data;
+          commit("setUserProfile", data);
           sessionStorage.setItem("userprofile", JSON.stringify(data));
+          commit("setLoading", false);
+          return response;
         } else {
-          console.log(response.message);
+          commit("setError", response.message);
         }
       } catch (error) {
-        console.error(error);
+        commit("setLoading", false); 
+        throw new Error(`Error ${error}`);
       }
     },
 
@@ -234,7 +235,12 @@ export default {
 
     signOut({ commit }) {
       commit("setLogout");
-      sessionStorage.removeItem("userInfo");
+      sessionStorage.removeItem("access");
+      sessionStorage.removeItem("refresh");
+      sessionStorage.removeItem("userprofile");
+      sessionStorage.clear();
+      // window reload
+      // window.location.reload();
     },
   },
 };

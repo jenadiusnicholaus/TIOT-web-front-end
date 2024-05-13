@@ -179,33 +179,9 @@
         >
           <li class="nav-item">
             <router-link tag="a" class to="/app/dashboards/dashboard.v1">
-              <i class="nav-icon i-Clock-3"></i>
+              <i class="nav-icon i-Home1"></i>
               <span class="item-name">{{
                 $t("dashboardItems.versionOne")
-              }}</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link tag="a" class to="/app/dashboards/dashboard.v2">
-              <i class="nav-icon i-Clock-4"></i>
-              <span class="item-name">{{
-                $t("dashboardItems.versionTwo")
-              }}</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link tag="a" class to="/app/dashboards/dashboard.v3">
-              <i class="nav-icon i-Over-Time"></i>
-              <span class="item-name">{{
-                $t("dashboardItems.versionThree")
-              }}</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link tag="a" class to="/app/dashboards/dashboard.v4">
-              <i class="nav-icon i-Clock"></i>
-              <span class="item-name">{{
-                $t("dashboardItems.versionFour")
               }}</span>
             </router-link>
           </li>
@@ -576,7 +552,7 @@
               <span class="item-name">Alerts</span>
             </router-link>
           </li>
-          <!-- <li
+          <li
             @click.prevent="toggleSidebarDropdwon($event)"
             class="nav-item dropdown-sidemenu"
           >
@@ -596,7 +572,7 @@
                 <a href>Sub menu item 1</a>
               </li>
             </ul>
-          </li>-->
+          </li>
           <li class="nav-item">
             <router-link tag="a" class to="/app/ui-kits/accordion">
               <i class="nav-icon i-Split-Horizontal-2-Window"></i>
@@ -815,7 +791,7 @@
           </li>
         </ul>
 
-        <ul
+        <!-- <ul
           class="childNav d-none"
           data-parent="sessions"
           :class="{ 'd-block': selectedParentMenu == 'sessions' }"
@@ -838,7 +814,7 @@
               <span class="item-name">Forgot</span>
             </router-link>
           </li>
-        </ul>
+        </ul> -->
         <ul
           class="childNav d-none"
           data-parent="others"
