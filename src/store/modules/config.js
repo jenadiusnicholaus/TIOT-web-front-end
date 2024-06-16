@@ -1,9 +1,9 @@
 const state = {
   themeMode: {
-    dark: false,
-    light: true,
+    dark: true,
+    light: false,
     semi_dark: false,
-    theme_color: "lite-purple",
+    theme_color: "lite-blue",
     layout: "large-sidebar",
     rtl: false,
   },

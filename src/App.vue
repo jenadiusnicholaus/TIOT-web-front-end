@@ -6,13 +6,16 @@
   </div>
 </template>
 
-
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
-    return {};
+    return {
+      xmppConnectionDetails:
+        JSON.parse(sessionStorage.getItem("xmppConnectionDetails")) || null,
+      presence: "online",
+    };
   },
   computed: {
     ...mapGetters(["getThemeMode"]),
@@ -21,26 +24,52 @@ export default {
     },
     rtl() {
       return this.getThemeMode.rtl ? "rtl" : " ";
-    }
+    },
+  },
+
+  methods: {
+    // reconnect if  the page is loaded from the cache  or if the connection is lost
+
+    ...mapActions(["updatePresence"]),
+
+    updateUserPresence() {
+      this.updatePresence(this.presence);
+    },
+    handleVisibilityChange() {
+      if (document.hidden) {
+        this.updatePresence("away"); // or 'offline'
+      } else {
+        this.updatePresence("online");
+      }
+    },
+  },
+  created() {
+    document.addEventListener("visibilitychange", this.handleVisibilityChange);
+  },
+  beforeDestroy() {
+    document.removeEventListener(
+      "visibilitychange",
+      this.handleVisibilityChange
+    );
   },
   metaInfo() {
     return {
       // if no subcomponents specify a metaInfo.title, this title will be used
       title: "Gull",
       // all titles will be injected into this template
-      titleTemplate: "%s | Gull - Vuejs Admin Dashboard Template",
+      titleTemplate: "%s | TIOT",
       bodyAttrs: {
-        class: [this.themeName, "text-left"]
+        class: [this.themeName, "text-left"],
       },
       htmlAttrs: {
-        dir: this.rtl
-      }
+        dir: this.rtl,
+      },
     };
-  }
+  },
+  mounted() {
+    this.updateUserPresence();
+  },
 };
 </script>
 
-<style>
-</style>
-
-
+<style></style>

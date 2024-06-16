@@ -351,7 +351,7 @@ export default {
     logoutUser() {
       this.signOut();
 
-      this.$router.push("/app/sessions/signIn");
+      this.$router.push("/sessions/signIn");
     },
 
     closeMegaMenu() {

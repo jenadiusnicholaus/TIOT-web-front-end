@@ -10,6 +10,7 @@
   "dependencies": {
     "@johmun/vue-tags-input": "^2.1.0",
     "@vue/composition-api": "^1.4.3",
+    "@xmpp/client": "^0.13.1",
     "apexcharts": "^3.32.1",
     "axios": "^1.6.8",
     "babel-polyfill": "^6.26.0",
@@ -23,6 +24,7 @@
     "mobile-device-detect": "^0.4.3",
     "nprogress": "^0.2.0",
     "sass": "^1.75.0",
+    "stanza": "^12.20.0",
     "v-calendar": "^2.3.4",
     "v2-datepicker": "^3.1.1",
     "vue": "^2.6.12",

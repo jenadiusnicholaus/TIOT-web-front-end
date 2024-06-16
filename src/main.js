@@ -22,6 +22,7 @@ import "font-awesome/css/font-awesome.min.css";
 import { ToastPlugin } from "bootstrap-vue";
 import "./interceptor/token_interceptor";
 // import "./interceptor/refresh_token_interceptor";
+import xmppSocket from "./store/services/xmppSocket";
 
 //defined as global component
 Vue.component(
@@ -42,7 +43,8 @@ Vue.use(ToastPlugin);
 // console.log(db);
 
 Vue.config.productionTip = false;
-
+// Vue.config.globalProperties.$xmpp = xmppSocket;
+Vue.prototype.$xmpp = xmppSocket;
 new Vue({
   store,
   router,

@@ -9,6 +9,8 @@ import invoice from "./modules/invoice";
 import cart from "./modules/cart";
 import verticalSidebar from "./modules/verticalSidebar";
 import scrumboard from "./modules/scrumboard";
+import xmppStore from "./modules/xmppStore";
+import storeWebsocket from "./modules/storeWebsocket";
 
 // Load Vuex
 Vue.use(Vuex);
@@ -25,5 +27,7 @@ export default new Vuex.Store({
     cart,
     verticalSidebar,
     scrumboard,
+    xmppStore,
+    storeWebsocket,
   },
 });

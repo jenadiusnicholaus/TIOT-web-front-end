@@ -17,8 +17,7 @@
                   <b-form-input
                     class="form-control-rounded"
                     type="text"
-                    v-model="email"
-                    email
+                    v-model="username"
                     required
                   ></b-form-input>
                 </b-form-group>
@@ -104,8 +103,11 @@ export default {
   },
   data() {
     return {
-      email: "",
+      username: "",
       password: "",
+      transportsUser: {
+        websocket: window.config.transports.websocket,
+      },
       // // password: "vue006",
       userId: "",
       bgImage: require("@/assets/images/photo-wide-4.jpg"),
@@ -127,21 +129,49 @@ export default {
     async formSubmit() {
       try {
         const response = await this.login({
-          username: this.email,
+          username: this.username,
           password: this.password,
         });
         if (response.status === 200) {
           try {
-            await this.getUserProfile();
+            const prres = await this.getUserProfile();
             this.notificationToast(
               this,
               true,
               "success",
               "Successfully Logged In"
             );
-            setTimeout(() => {
-              this.$router.push("/app/dashboards/dashboard.v1");
-            }, 500);
+
+            if (prres.status === 200) {
+              try {
+                // await this.$xmpp.create(
+                //   this.username,
+                //   this.password,
+                //   null,
+                //   this.transportsUser,
+                //   this
+                // );
+                const requestData = {
+                  jid: this.username,
+                  password: this.password,
+                  domain: "localhost",
+                  context: this,
+                };
+                console.log(requestData);
+                await this.$store.dispatch("createXmppClient", requestData);
+                // await this.$xmpp.connect();
+                setTimeout(() => {
+                  this.$router.push("/app/dashboards/dashboard.v1");
+                }, 500);
+              } catch (error) {
+                this.notificationToast(
+                  this,
+                  true,
+                  "warning",
+                  `${error.message}`
+                );
+              }
+            }
           } catch (error) {
             this.notificationToast(
               this,
@@ -154,6 +184,7 @@ export default {
           this.notificationToast(this, true, "warning", "Error Logging In");
         }
       } catch (error) {
+        console.log(error);
         this.notificationToast(this, true, "warning", `${error.message} `);
       }
     },

@@ -12,10 +12,14 @@ Vue.use(Router);
 
 const routes = [
   {
+    // path: "/",
+    // beforeEnter: authenticate,
+    // component: () => import("./views/app"),
+    // redirect: "/app/dashboards/dashboard.v1",
+
     path: "/",
-    beforeEnter: authenticate,
-    component: () => import("./views/app"),
-    redirect: "/app/dashboards/dashboard.v1",
+    name: "landing_page",
+    component: () => import("./views/app/pages/landing_page"),
   },
 
   {
@@ -189,123 +193,12 @@ const routes = [
       //  apps
       {
         path: "/app/apps",
-        component: () => import("./views/app/apps"),
+        component: () => import("./views/app/apps/chat.vue"),
         redirect: "/app/apps/chat",
         children: [
           {
-            path: "scrumboard",
-            name: "scrumboard",
-            component: () => import("./views/app/apps/scrumboard"),
-          },
-          {
-            path: "add-scrumboard",
-            name: "add-scrumboard",
-            component: () => import("./views/app/apps/scrumboardAddBoard"),
-          },
-          {
-            path: "edit-scrumboard",
-            name: "edit-scrumboard",
-            component: () =>
-              import("./views/app/apps/scrumboard/editScrumBoard"),
-          },
-          // {
-          //   path: "scrumboard-one",
-          //   component: () => import("./views/app/apps/scrumboard/scrumboard-content-one")
-          // },
-          {
-            path: "contact-list-table",
-            name: "contact-list-table",
-            component: () => import("./views/app/apps/contactListTable"),
-          },
-          {
-            path: "todo-list",
-            name: "todo-list",
-            component: () => import("./views/app/apps/todo-list"),
-          },
-          {
-            path: "invoice",
-            name: "invoice",
-            component: () => import("./views/app/apps/invoice"),
-          },
-          {
-            path: "createInvoice",
-            name: "createInvoice",
-            component: () => import("./views/app/apps/createInvoice"),
-          },
-          {
-            path: "edit-invoice",
-            name: "edit-invoice",
-            component: () => import("./views/app/apps/editInvoice"),
-          },
-          {
-            path: "products",
-            name: "products",
-            component: () => import("./views/app/apps/products"),
-          },
-          {
-            path: "product-detail",
-            name: "product-detail",
-            component: () => import("./views/app/apps/productDetails"),
-          },
-          {
-            path: "checkout",
-            name: "checkout",
-            component: () => import("./views/app/apps/cart"),
-          },
-          {
-            path: "checkout-address",
-            name: "checkout-address",
-            component: () => import("./views/app/apps/checkoutAddress"),
-          },
-          {
-            path: "printInvoice",
-            name: "printInvoice",
-            component: () => import("./views/app/apps/printInvoice"),
-          },
-          {
-            path: "taskManager",
-            name: "taskManager",
-            component: () => import("./views/app/apps/taskManager"),
-          },
-          {
-            path: "calendar",
-            name: "calendar",
-            component: () => import("./views/app/apps/calendar"),
-          },
-          {
-            path: "table",
-            name: "table",
-            component: () => import("./views/app/apps/table"),
-          },
-          {
-            path: "vue-table",
-            name: "vue-table",
-            component: () => import("./views/app/apps/vue-tables"),
-          },
-          {
-            path: "inbox",
-            name: "inbox",
-            component: () => import("./views/app/apps/inbox"),
-          },
-          {
             path: "chat",
             component: () => import("./views/app/apps/chat"),
-          },
-          {
-            path: "contact-details",
-            component: () => import("./views/app/apps/contact-details"),
-          },
-          {
-            path: "contact-grid",
-            component: () => import("./views/app/apps/contact-grid"),
-          },
-          {
-            path: "contact-list",
-            component: () => import("./views/app/apps/contact-list"),
-          },
-          {
-            path: "payment-checkout",
-            component: () => import("./views/app/apps/paymentCheckout"),
           },
         ],
       },
@@ -374,11 +267,6 @@ const routes = [
             path: "list",
             name: "list",
             component: () => import("./views/app/datatables/list"),
-          },
-          {
-            path: "vue-good-table",
-            name: "vue-good-table",
-            component: () => import("./views/app/apps/vue-good-table"),
           },
         ],
       },

@@ -265,7 +265,7 @@
         >
           <template slot="button-content">
             <img
-              src="@/assets/images/faces/1.jpg"
+              :src="profilePic"
               id="userDropdown"
               alt
               data-toggle="dropdown"
@@ -276,11 +276,16 @@
 
           <div class="dropdown-menu-right" aria-labelledby="userDropdown">
             <div class="dropdown-header">
-              <i class="i-Lock-User mr-1"></i> Timothy Carlson cd,d,d
+              <i class="i-Lock-User mr-1"></i>{{ username }}
             </div>
+            <a @click="gotoProfile()" class="dropdown-item">profile</a>
             <a class="dropdown-item">Account settings</a>
-            <a class="dropdown-item">Billing history</a>
-            <a class="dropdown-item" href="#" @click.prevent="logoutUser"
+            <!-- <a class="dropdown-item">Billing history</a> -->
+            <a
+              style="color: red"
+              class="dropdown-item"
+              href="#"
+              @click.prevent="logoutUser"
               >Sign out</a
             >
           </div>
@@ -316,6 +321,7 @@ export default {
       isSearchOpen: false,
       isMouseOnMegaMenu: true,
       isMegaMenuOpen: false,
+      profile: JSON.parse(sessionStorage.getItem("userprofile")),
     };
   },
   mounted() {
@@ -323,9 +329,22 @@ export default {
   },
   computed: {
     ...mapGetters(["getCompactSideBarToggleProperties"]),
+
+    profilePic() {
+      return this.profile?.user_profile_pic
+        ? this.profile?.user_profile_pic
+        : require("@/assets/images/avata_profile.jpeg");
+    },
+
+    username() {
+      return this.profile?.user?.username;
+    },
   },
 
   methods: {
+    gotoProfile() {
+      this.$router.push("/app/pages/profile");
+    },
     ...mapActions([
       "changeCompactSidebarProperties",
       "changeThemeMode",
@@ -334,7 +353,7 @@ export default {
     logoutUser() {
       this.signOut();
 
-      this.$router.push("/app/sessions/signIn");
+      this.$router.push("/sessions/signIn");
     },
     handleFullScreen() {
       Util.toggleFullScreen();
@@ -355,6 +374,7 @@ export default {
 
     compactSideBarToggle(el) {
       // console.log("test");
+      console.log(el);
       if (this.getCompactSideBarToggleProperties.isSideNavOpen && isMobile) {
         this.changeCompactSidebarProperties();
         // console.log("1");

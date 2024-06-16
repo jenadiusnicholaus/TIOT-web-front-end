@@ -1,6 +1,6 @@
 <template>
   <div class="main-content">
-    <breadcumb :page="'Chat'" :folder="'apps'" />
+    <!-- <breadcumb :page="'Chat'" :folder="'apps'" /> -->
 
     <div class="card chat-sidebar-container sidebar-container">
       <div class="chat-sidebar-wrap sidebar" :class="{ 'ml-0': isMobile }">
@@ -24,32 +24,19 @@
 
           <vue-perfect-scrollbar
             :settings="{ suppressScrollX: true, wheelPropagation: false }"
-            class="contacts-scrollable perfect-scrollbar  rtl-ps-none ps scroll"
+            class="contacts-scrollable perfect-scrollbar rtl-ps-none ps scroll"
           >
             <div>
-              <!-- <div
-                class="mt-4 pb-2 pl-3 pr-3 font-weight-bold text-muted border-bottom"
-              >
-                Recent
-              </div>
               <div
-                class="p-3 d-flex border-bottom align-items-center contact"
-                v-for="contact in getRecentUser"
-                :key="contact.name"
-                :class="contact.status"
+                class="mt-3 pb-2 d-flex justify-content-between pl-3 pr-3 font-weight-bold text-muted border-bottom"
               >
-                <img
-                  :src="contact.avatar"
-                  alt=""
-                  class="avatar-sm rounded-circle mr-3"
-                />
-                <h6 class="">{{ contact.name }}</h6>
-              </div> -->
+                Contacts ({{ filterContacts.length }})
 
-              <div
-                class="mt-3 pb-2 pl-3 pr-3 font-weight-bold text-muted border-bottom"
-              >
-                Contacts
+                <b-button v-b-modal.modal-sm2 variant="outline-success m-0 p-2">
+                  <span class="ul-btn__icon"
+                    ><i class="i-Add-UserStar"></i
+                  ></span>
+                </b-button>
               </div>
 
               <div
@@ -162,39 +149,83 @@
         </vue-perfect-scrollbar>
 
         <div class="pl-3 pr-3 pt-3 pb-3 box-shadow-1 chat-input-area">
-          <form class="inputForm">
+          <form class="inputForm" @submit.prevent="sendMessage">
             <div class="form-group">
               <textarea
                 class="form-control form-control-rounded"
                 placeholder="Type your message"
                 name="message"
                 id="message"
+                v-model="message"
                 cols="30"
                 rows="3"
                 spellcheck="false"
-              ></textarea>
+              >
+                aria-label="Type your message"
+              ></textarea
+              >
+              <!-- @keydown.enter.exact.prevent="sendMessage" -->
             </div>
             <div class="d-flex">
               <div class="flex-grow-1"></div>
-              <button class="btn btn-icon btn-rounded btn-primary mr-2">
+              <button
+                type="submit"
+                :disabled="!message"
+                class="btn btn-icon btn-rounded btn-primary mr-2"
+                aria-label="Send message"
+              >
                 <i class="i-Paper-Plane"></i>
               </button>
-              <button
+              <input
+                type="file"
+                id="fileUpload"
+                class="d-none"
+                aria-label="Upload file"
+              />
+              <label
+                for="fileUpload"
                 class="btn btn-icon btn-rounded btn-outline-primary"
-                type="button"
+                aria-label="Upload file"
               >
                 <i class="i-Add-File"></i>
-              </button>
+              </label>
             </div>
           </form>
         </div>
       </div>
     </div>
+    <b-modal
+      id="modal-sm2"
+      size="sm"
+      title="Change Presence"
+      hide-footer
+      ref="add-roaster-modal"
+    >
+      <b-form @submit.prevent="onSubmit">
+        <b-form-group
+          id="input-group-1"
+          label="Roaster Name:"
+          label-for="input-1"
+        >
+          <b-form-input
+            id="input-1"
+            v-model="roaster.name"
+            required
+            placeholder="Enter roaster phone number or username in BeeChat"
+          ></b-form-input>
+        </b-form-group>
+
+        <b-button type="submit" variant="primary">Add Roaster</b-button>
+      </b-form>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+// import * as XMPP from "stanza";
+// import { client as XMPPClient, xml } from "@xmpp/client";
+// import { client, xml } from "@xmpp/client";
 
 export default {
   metaInfo: {
@@ -206,12 +237,72 @@ export default {
       recentContacts: [],
       search: "",
       isMobile: false,
+      message: "",
+      client: null,
+      messages: [],
+      inputMessage: "",
+      presenceStatus: "Offline",
+      presenceClass: "status-offline",
+      xmpp: null,
+
+      roaster: {
+        name: "",
+        type: "",
+      },
     };
   },
+
+  setup() {
+    return {};
+  },
+
   methods: {
-    ...mapActions(["changeSelectedUser"]),
-    console() {
-      // console.log(this.test);s
+    notificationToast(vm, append = false, variant = null, msg) {
+      vm.$bvToast.toast(`${msg}`, {
+        title: `${msg}`,
+        autoHideDelay: 5000,
+        appendToast: append,
+        variant: variant,
+      });
+    },
+    ...mapActions([
+      "changeSelectedUser",
+      "sendMessage",
+      "addRoaster",
+      "getRoaster",
+    ]),
+    onSubmit() {
+      this.addRoaster({
+        jid: `${this.roaster.name}@localhost`,
+        name: this.roaster.name,
+        error: (error) => {
+          console.log(error);
+        },
+        success: (success) => {
+          console.log(success);
+        },
+      });
+      this.jid = "";
+      this.name = "";
+    },
+
+    getContactRoaster() {
+      this.getRoaster({
+        error: (error) => {
+          console.log(error);
+        },
+        success: (success) => {
+          this.notificationToast(
+            this,
+            true,
+            "success",
+            "Successfully Loaded Roaster List"
+          );
+          this.$refs["add-roaster-modal"].hide();
+
+          console.log(success);
+        },
+      });
     },
   },
 
@@ -230,17 +321,14 @@ export default {
     },
   },
 
-  created: function() {
-    // console.log(this.getSelectedUser);
-    // this.getCurrentUser.forEach(currentUser => {
-    //   currentUser.chatInfo.forEach(user => {
-    //     this.getContactLists.filter(contact => {
-    //       if (user.contactId == contact.id) {
-    //         this.recentContacts.push(contact);
-    //       }
-    //     });
-    //   });
-    // });
+  created: function () {
+    // this.client = XMPP.createClient({
+    //   jid: "admin@localhost",
+    //   password: "admin",
+  },
+
+  mounted() {
+    this.getContactRoaster();
   },
 };
 </script>

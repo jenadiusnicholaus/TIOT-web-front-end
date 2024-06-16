@@ -267,14 +267,17 @@
           variant="link"
         >
           <template slot="button-content">
-            <img
-              :src="profilePic"
-              id="userDropdown"
-              alt
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            />
+            <div class="image-wrapper">
+              <img
+                :src="profilePic"
+                id="userDropdown"
+                alt
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              />
+              <div class="status-indicator" :class="{ online: isOnline }"></div>
+            </div>
           </template>
 
           <div class="dropdown-menu-right" aria-labelledby="userDropdown">
@@ -282,8 +285,13 @@
               <i class="i-Lock-User mr-1"></i>{{ username }}
             </div>
             <a @click="gotoProfile()" class="dropdown-item">profile</a>
-            <a class="dropdown-item">Account settings</a>
-            <!-- <a class="dropdown-item">Billing history</a> -->
+            <a class="dropdown-item">
+              <b-button v-b-modal.modal-sm1 variant="outline-success m-1">
+                change Status</b-button
+              >
+
+              >
+            </a>
             <a
               style="color: red"
               class="dropdown-item"
@@ -299,6 +307,51 @@
       :isSearchOpen.sync="isSearchOpen"
       @closeSearch="toggleSearch"
     ></search-component>
+
+    <b-modal id="modal-sm1" size="sm" title="Change Presence" hide-footer>
+      <div class="form-group">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            id="online"
+            value="online"
+            v-model="presence"
+            @change="updateUserPresence"
+          />
+          <label class="form-check-label" for="online">
+            <span class="badge badge-pill badge-success">Online</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            id="away"
+            value="away"
+            v-model="presence"
+            @change="updateUserPresence"
+          />
+          <label class="form-check-label" for="away">
+            <span class="badge badge-pill badge-warning">Away</span>
+          </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            id="offline"
+            value="offline"
+            v-model="presence"
+            @change="updateUserPresence"
+          />
+          <label class="form-check-label" for="offline">
+            <span class="badge badge-pill badge-danger">Offline</span>
+          </label>
+        </div>
+      </div>
+      <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+    </b-modal>
   </div>
 
   <!-- header top menu end -->
@@ -322,8 +375,8 @@ export default {
   data() {
     return {
       isDisplay: true,
-
       isStyle: true,
+      presence: "online",
       isSearchOpen: false,
       isMouseOnMegaMenu: true,
       isMegaMenuOpen: false,
@@ -336,11 +389,16 @@ export default {
     // console.log(this.profile);
   },
   computed: {
-    ...mapGetters(["getSideBarToggleProperties"]),
+    ...mapGetters(["getSideBarToggleProperties", "getPresence"]),
     profilePic() {
       return this.profile?.user_profile_pic
         ? this.profile?.user_profile_pic
         : require("@/assets/images/avata_profile.jpeg");
+    },
+
+    isOnline() {
+      console.log(this.getPresence);
+      return this.getPresence === "online" ? true : false;
     },
 
     username() {
@@ -351,17 +409,16 @@ export default {
   methods: {
     ...mapActions([
       "changeSecondarySidebarProperties",
-
       "changeSidebarProperties",
       "changeThemeMode",
       "signOut",
+
+      "updatePresence",
     ]),
 
-    // megaMenuToggle() {
-    //   this.isMegaMenuOpen = false;
-
-    //   console.log("work");
-    // },
+    updateUserPresence() {
+      this.updatePresence(this.presence);
+    },
 
     gotoProfile() {
       this.$router.push("/app/pages/profile");
@@ -372,7 +429,6 @@ export default {
     },
     logoutUser() {
       this.signOut();
-
       this.$router.push("/sessions/signIn");
     },
 
@@ -391,6 +447,7 @@ export default {
     },
 
     sideBarToggle(el) {
+      console.log(el);
       if (
         this.getSideBarToggleProperties.isSideNavOpen &&
         this.getSideBarToggleProperties.isSecondarySideNavOpen &&
@@ -425,3 +482,25 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border: 1px solid white;
+  border-radius: 50%;
+  background-color: red;
+}
+
+.status-indicator.online {
+  background-color: green;
+}
+</style>

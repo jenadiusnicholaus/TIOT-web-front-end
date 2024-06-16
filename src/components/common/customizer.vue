@@ -217,7 +217,7 @@
           class
           v-if="
             getThemeMode.layout != 'vertical-sidebar' &&
-              getThemeMode.layout != 'vertical-sidebar-two'
+            getThemeMode.layout != 'vertical-sidebar-two'
           "
         >
           <div class="card-header" id="headingOne">
